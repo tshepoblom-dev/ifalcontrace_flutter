@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "181951791910",
+    "project_id": "ifalcontrace-67bf9",
+    "storage_bucket": "ifalcontrace-67bf9.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:181951791910:android:df48ef0d40fe6e8efd77e7",
+        "android_client_info": {
+          "package_name": "com.lumko.ifalcontrace"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABHfjHwCUkV1MplJy0aaDN1kjNpeQash8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
