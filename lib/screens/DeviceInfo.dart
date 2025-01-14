@@ -54,15 +54,20 @@ class _DeviceInfoState extends State<DeviceInfo> {
   Widget loadDevice() {
     Device? d = args!.device;
     String iconPath = "images/marker_default_offline.png";
-
+    Map<String, dynamic> attributes = d.attributes!;
     String status;
+    String driverName="";
 
+    for(var entry in attributes.entries){
+      if(entry.key == "driver"){
+        driverName = entry.value.toString();
+      }
+    }
     if (d.status == "unknown") {
       status = 'static';
     } else {
       status = d.status!;
     }
-
     if (d.category != null) {
       iconPath = "images/marker_" + d.category! + "_" + status + ".png";
     } else {
@@ -90,6 +95,17 @@ class _DeviceInfoState extends State<DeviceInfo> {
                         height: 50,
                       ),
                     ),
+                      Container(
+                      padding: EdgeInsets.only(top: 10.0, left: 5.0),
+                      child: Text(driverName, 
+                            overflow: TextOverflow.ellipsis, 
+                            maxLines: 2,  
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 17.0,
+                              fontWeight: FontWeight.bold,
+                            ),),
+                    ),
                     Container(
                         width: 200,
                         padding: EdgeInsets.only(top: 10.0, left: 5.0),
@@ -112,8 +128,8 @@ class _DeviceInfoState extends State<DeviceInfo> {
         ),
         Container(child: mainInfo()),
         Container(child: positionDetails()),
-        Container(child: Text("Sensors", style: TextStyle(fontSize: 16))),
-        Container(child: sensorInfo())
+      //Container(child: Text("Sensors", style: TextStyle(fontSize: 16))),
+      //Container(child: sensorInfo())
       ],
     );
   }
@@ -127,26 +143,7 @@ class _DeviceInfoState extends State<DeviceInfo> {
               child:
                Column(
           children: <Widget>[          
-         new Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-         children: <Widget>[
-           new Expanded(child: Text(('positionLatitude').tr)),
-           new Expanded(child: Text(args!.positionModel!.latitude!.toStringAsFixed(5)))
-         ]),
-         new Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-         children: <Widget>[
-           new Expanded(child: Text(('positionLongitude').tr)),
-           new Expanded(child: Text(args!.positionModel!.longitude!.toStringAsFixed(5)))
-         ]),
-          new Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-         children: <Widget>[
-           new Expanded(child: Text(('positionSpeed').tr)),
-           new Expanded(child: Text(convertSpeed(args!.positionModel!.speed!)))
-         ]),
-          new Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-         children: <Widget>[
-           new Expanded(child: Text(('positionCourse').tr)),
-           new Expanded(child: Text(convertCourse(args!.positionModel!.course!)))
-         ]),
+       
          
         //  SizedBox(height: 5.0),
           args!.positionModel!.address != null
@@ -176,6 +173,26 @@ class _DeviceInfoState extends State<DeviceInfo> {
                   ],
                 )
               : new Container(),
+                new Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+         children: <Widget>[
+           new Expanded(child: Text(('positionLatitude').tr)),
+           new Expanded(child: Text(args!.positionModel!.latitude!.toStringAsFixed(5)))
+         ]),
+         new Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+         children: <Widget>[
+           new Expanded(child: Text(('positionLongitude').tr)),
+           new Expanded(child: Text(args!.positionModel!.longitude!.toStringAsFixed(5)))
+         ]),
+          new Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+         children: <Widget>[
+           new Expanded(child: Text(('positionSpeed').tr)),
+           new Expanded(child: Text(convertSpeed(args!.positionModel!.speed!)))
+         ]),
+          new Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+         children: <Widget>[
+           new Expanded(child: Text(('positionCourse').tr)),
+           new Expanded(child: Text(convertCourse(args!.positionModel!.course!)))
+         ]),
           SizedBox(height: 5.0),
         ]),)
       );
@@ -269,18 +286,7 @@ class _DeviceInfoState extends State<DeviceInfo> {
             new Expanded(child: Text(args!.device.model!))
         ]));
       }
-      for(var entry in attributes2.entries){
-       if (entry.key == "totalDistance") {
-          keyList.add(new Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              new Expanded(
-                  child: Text('Odometer')),
-              new Expanded(child: Text(convertDistance(entry.value)))
-            ],
-          ));
-        }
-      }
+     
       for(var entry in attributes.entries){
         if(entry.key == "VIN"){
               keyList.add(new Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -294,12 +300,38 @@ class _DeviceInfoState extends State<DeviceInfo> {
               keyList.add(new Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [new Expanded(child: Text('Registration Number')), 
                   new Expanded(child: Text(entry.value.toString()))]));
+        }else if(entry.key == "Number_Plate"){
+              keyList.add(new Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [new Expanded(child: Text('Number Plate')), 
+                  new Expanded(child: Text(entry.value.toString()))]));
         }else if(entry.key == "Color"){
                keyList.add(new Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [new Expanded(child: Text('Color')), 
                   new Expanded(child: Text(entry.value.toString()))]));
+        }else if(entry.key == "Driver"){
+               keyList.add(new Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [new Expanded(child: Text('Driver Name')), 
+                  new Expanded(child: Text(entry.value.toString()))]));
+        }else {
+               keyList.add(new Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [new Expanded(child: Text(entry.key.tr)), 
+                  new Expanded(child: Text(entry.value.toString()))]));
         }
       }
+
+       for(var entry in attributes2.entries){
+       if (entry.key == "totalDistance") {
+          keyList.add(new Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              new Expanded(
+                  child: Text('Odometer')),
+              new Expanded(child: Text(convertDistance(entry.value)))
+            ],
+          ));
+        }
+      }
+
       return new Card(
           elevation: 5.0,
           child: Padding(
